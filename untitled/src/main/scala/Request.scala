@@ -10,6 +10,30 @@ object Request extends App{
     parse(contents)
   }
 
+  def findActorId(firstName: String, lastName: String): Option[Int] = {
+    val query = s"$firstName+$lastName"
+    val url = f"https://api.themoviedb.org/3/search/person?api_key=$apikey&query=$query"
+    val result = do_request(url)
+    (for {
+      JObject(root) <- result
+      JField("results", JArray(results)) <- root
+      JObject(actor) <- results
+      JField("id", JInt(id)) <- actor
+    } yield id.toInt).headOption
+  }
+
+  def findActorMovies(actorId: Int): Set[(Int, String)] = {
+    val url = f"https://api.themoviedb.org/3/person/$actorId/movie_credits?api_key=$apikey"
+    val result = do_request(url)
+    (for {
+      JObject(root) <- result
+      JField("cast", JArray(cast)) <- root
+      JObject(movie) <- cast
+      JField("id", JInt(movieId)) <- movie
+      JField("title", JString(title)) <- movie
+    } yield (movieId.toInt, title)).toSet
+  }
+
   def findMovieDirector(movieId: Int): Option[(Int,String)] = {
     val url:String = f"https://api.themoviedb.org/3/movie/$movieId/credits?api_key=$apikey"
 
