@@ -1,14 +1,18 @@
 import TMDBCache.{Director, movieCache, saveCache}
 import org.json4s.*
 import org.json4s.native.JsonMethods.*
-
-import scala.io.Source
 import java.io.{File, PrintWriter}
+import scala.io.Source
+
+import java.io.PrintWriter
 
 object Request extends App{
   val apikey:String = "87551e2a0dd79b7a73f084bb30486087"
+  val cache_movie_url:String = "file:./src/main/scala/cache/movie.json"
+  val cache_actor_url:String = "file:./src/main/scala/cache/actor.json"
 
-  def do_request(url:String) : org.json4s.JValue = {
+  private def do_request(url:String) : org.json4s.JValue = {
+
     val source = Source.fromURL(url)
     val contents = source.mkString
 
@@ -17,9 +21,11 @@ object Request extends App{
 
   def findActorId(firstName: String, lastName: String): Option[Int] = {
 
-    val file = new File(s"chache/actor.json")
+      val query = s"$firstName+$lastName"
+//    val contents = Source.fromURL(cache_actor_url).mkString
 
-    val query = s"$firstName+$lastName"
+//    val jsonContents = parse(contents).asInstanceOf[JObject]
+    
     val url = f"https://api.themoviedb.org/3/search/person?api_key=$apikey&query=$query"
     val result = do_request(url)
     (for {
