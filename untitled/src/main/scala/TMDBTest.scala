@@ -3,7 +3,7 @@ import Request._
 object TMDBTest extends App {
 
   // Test 1: Find Actor ID
-  val actorId = findActorId("Leonardo", "DiCaprio")
+  val actorId: Any = findActorId("Leonardo", "DiCaprio")
   println(s"Actor ID for Leonardo DiCaprio: $actorId")
 
   // Test 2: Find Movies for an Actor
@@ -22,10 +22,10 @@ object TMDBTest extends App {
 
   // Example: Find director for a movie
   val movieId = 272 // Example movie ID
-  val director = findMovieDirector(movieId)
+  val director: Any = findMovieDirector(movieId)
   println(s"Director of movie $movieId: $director")
 
   // Example: Call again to demonstrate caching
-  val cachedDirector = findMovieDirector(movieId)
+  val cachedDirector: Any = findMovieDirector(movieId)
   println(s"Cached Director of movie $movieId: $cachedDirector")
 }

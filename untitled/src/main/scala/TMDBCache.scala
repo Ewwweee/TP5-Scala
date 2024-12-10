@@ -49,10 +49,10 @@ object TMDBCacheTest extends App {
 
   // Example: Find director for a movie
   val movieId = 272 // Example movie ID
-  val director = findMovieDirector(movieId)
+  val director: Any = findMovieDirector(movieId)
   println(s"Director of movie $movieId: $director")
 
   // Example: Call again to demonstrate caching
-  val cachedDirector = findMovieDirector(movieId)
+  val cachedDirector: Any = findMovieDirector(movieId)
   println(s"Cached Director of movie $movieId: $cachedDirector")
 }
