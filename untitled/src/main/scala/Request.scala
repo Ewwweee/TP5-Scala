@@ -6,40 +6,28 @@ import scala.io.Source
 import java.io.{File, PrintWriter}
 
 object Request extends App{
-  val apikey:String = "87551e2a0dd79b7a73f084bb30486087"
-
-  def do_request(url:String) : org.json4s.JValue = {
+  private val apikey:String = "87551e2a0dd79b7a73f084bb30486087"
+  private def do_request(url:String) : org.json4s.JValue = {
     val source = Source.fromURL(url)
     val contents = source.mkString
 
     parse(contents)
   }
 
-  def findActorId(firstName: String, lastName: String): Option[Int] = {
-
-    val file = new File(s"chache/actor.json")
-
-    val query = s"$firstName+$lastName"
-    val url = f"https://api.themoviedb.org/3/search/person?api_key=$apikey&query=$query"
-    val result = do_request(url)
+  private def extractFirstActorId(jsonValue: JValue): Option[Int] = {
     (for {
-      JObject(root) <- result
-      JField("results", JArray(results)) <- root
-      JObject(actor) <- results
-      JField("id", JInt(id)) <- actor
+      case JObject(child) <- jsonValue
+      case JField("results", JArray(results)) <- child
+      case JObject(actor) <- results
+      case JField("id", JInt(id)) <- actor
     } yield id.toInt).headOption
   }
 
-  def findActorMovies(actorId: Int): Set[(Int, String)] = {
-    val url = f"https://api.themoviedb.org/3/person/$actorId/movie_credits?api_key=$apikey"
+  def findActorId(firstName: String, lastName: String): Option[Int] = {
+    val query = s"$firstName+$lastName"
+    val url = f"https://api.themoviedb.org/3/search/person?api_key=$apikey&query=$query"
     val result = do_request(url)
-    (for {
-      JObject(root) <- result
-      JField("cast", JArray(cast)) <- root
-      JObject(movie) <- cast
-      JField("id", JInt(movieId)) <- movie
-      JField("title", JString(title)) <- movie
-    } yield (movieId.toInt, title)).toSet
+    extractFirstActorId(result)
   }
 
   def findMovieDirector(movieId: Int): Option[Director] = {
@@ -51,12 +39,12 @@ object Request extends App{
         val url = f"https://api.themoviedb.org/3/movie/$movieId/credits?api_key=$apikey"
         val result = Request.do_request(url)
         val director = (for {
-          JObject(root) <- result
-          JField("crew", JArray(crew)) <- root
-          JObject(member) <- crew
-          JField("job", JString(job)) <- member if job == "Director"
-          JField("id", JInt(id)) <- member
-          JField("name", JString(name)) <- member
+          case JObject(root) <- result
+          case JField("crew", JArray(crew)) <- root
+          case JObject(member) <- crew
+          case JField("job", JString(job)) <- member if job == "Director"
+          case JField("id", JInt(id)) <- member
+          case JField("name", JString(name)) <- member
         } yield Director(id.toInt, name)).headOption
 
         // Update the cache and save it to the file
@@ -68,7 +56,19 @@ object Request extends App{
     }
   }
 
-  type FullName = (String,String)
+  def fetchMovies(actorId: Int): Set[(Int, String)] = {
+    val url = f"https://api.themoviedb.org/3/person/$actorId/movie_credits?api_key=$apikey"
+    val result = do_request(url)
+    (for {
+      case JObject(child) <- result
+      case JField("cast", JArray(cast)) <- child
+      case JObject(movie) <- cast
+      case JField("id", JInt(id)) <- movie
+      case JField("title", JString(title)) <- movie
+    } yield (id.toInt, title)).toSet
+  }
+
+  private type FullName = (String, String)
 
   def collaboration(actor1: FullName, actor2: FullName): Set[(String, String)] = {
     // Helper URLs for actor searches
@@ -79,35 +79,11 @@ object Request extends App{
     val result1 = do_request(url1)
     val result2 = do_request(url2)
 
-    val actor1Id = (for {
-      JObject(child) <- result1
-      JField("results", JArray(results)) <- child
-      JObject(actor) <- results
-      JField("id", JInt(id)) <- actor
-    } yield id.toInt).headOption
-
-    val actor2Id = (for {
-      JObject(child) <- result2
-      JField("results", JArray(results)) <- child
-      JObject(actor) <- results
-      JField("id", JInt(id)) <- actor
-    } yield id.toInt).headOption
+    val actor1Id = extractFirstActorId(result1)
+    val actor2Id = extractFirstActorId(result2)
 
     // If either actor is not found, return an empty set
     if (actor1Id.isEmpty || actor2Id.isEmpty) return Set.empty
-
-    // Helper function to fetch movies for an actor
-    def fetchMovies(actorId: Int): Set[(Int, String)] = {
-      val url = f"https://api.themoviedb.org/3/person/$actorId/movie_credits?api_key=$apikey"
-      val result = do_request(url)
-      (for {
-        JObject(child) <- result
-        JField("cast", JArray(cast)) <- child
-        JObject(movie) <- cast
-        JField("id", JInt(id)) <- movie
-        JField("title", JString(title)) <- movie
-      } yield (id.toInt, title)).toSet
-    }
 
     // Fetch movies for both actors
     val moviesActor1 = fetchMovies(actor1Id.get)
@@ -122,9 +98,7 @@ object Request extends App{
         (director.name, movieTitle) // Map director's name and movie title
       }
     }
-
     collaboration
   }
-
 
 }
