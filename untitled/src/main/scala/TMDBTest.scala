@@ -3,12 +3,12 @@ import Request._
 object TMDBTest extends App {
 
   // Test 1: Find Actor ID
-  val actorId: Any = findActorId("Leonardo", "DiCaprio")
+  val actorId: Option[Int] = findActorId("Leonardo", "DiCaprio")
   println(s"Actor ID for Leonardo DiCaprio: $actorId")
 
   // Test 2: Find Movies for an Actor
   actorId.foreach { id =>
-    val movies = fetchMovies(id)
+    val movies = findActorMovies(id)
     println(s"Movies for Leonardo DiCaprio: $movies")
   }
 

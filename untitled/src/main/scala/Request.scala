@@ -134,9 +134,9 @@ object Request extends App{
 
   def findMovieDirector(movieId: Int): Option[Director] = {
     // Check the cache first
-//    movieCache.get(movieId) match {
-//      case Some(director) => Some(director) // Return cached result
-//      case None =>
+    movieCache.get(movieId) match {
+      case Some(director) => Some(director) // Return cached result
+      case None =>
         // If not in cache, fetch from the API
         val url = f"https://api.themoviedb.org/3/movie/$movieId/credits?api_key=$apikey"
         val result = Request.do_request(url)
@@ -149,40 +149,19 @@ object Request extends App{
           case JField("name", JString(name)) <- member
         } yield Director(id.toInt, name)).headOption
 
-//        // Update the cache and save it to the file
-//        director.foreach { dir =>
-//          movieCache += (movieId -> dir)
-//          saveCache()
-//        }
+        // Update the cache and save it to the file
+        director.foreach { dir =>
+          movieCache += (movieId -> dir)
+          saveCache()
+        }
         director
-//    }
-  }
-
-  def fetchMovies(actorId: Int): Set[(Int, String)] = {
-    val url = f"https://api.themoviedb.org/3/person/$actorId/movie_credits?api_key=$apikey"
-    val result = do_request(url)
-    (for {
-      case JObject(child) <- result
-      case JField("cast", JArray(cast)) <- child
-      case JObject(movie) <- cast
-      case JField("id", JInt(id)) <- movie
-      case JField("title", JString(title)) <- movie
-    } yield (id.toInt, title)).toSet
+    }
   }
 
   private type FullName = (String, String)
 
   def collaboration(actor1: FullName, actor2: FullName): Set[(String, String)] = {
-    // Helper URLs for actor searches
-    val url1: String = f"https://api.themoviedb.org/3/search/person?api_key=$apikey&query=${actor1._1}+${actor1._2}"
-    val url2: String = f"https://api.themoviedb.org/3/search/person?api_key=$apikey&query=${actor2._1}+${actor2._2}"
-
-    // Fetch actor IDs from the API
-    val result1 = do_request(url1)
-    val result2 = do_request(url2)
-
     val actor1Id = findActorId(actor1._1,actor1._2)
-
     val actor2Id = findActorId(actor2._1,actor2._2)
 
     actor1Id match {
