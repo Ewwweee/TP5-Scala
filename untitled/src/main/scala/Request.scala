@@ -82,6 +82,7 @@ object Request extends App{
     }
   }
 
+
   def findActorMovies(actorId: Int): Set[(Int, String)] = {
     println("Map : " + find_actor_movies_map)
     val primary_value = seek_primary_cache(find_actor_movies_map,actorId)
@@ -140,12 +141,12 @@ object Request extends App{
         val url = f"https://api.themoviedb.org/3/movie/$movieId/credits?api_key=$apikey"
         val result = Request.do_request(url)
         val director = (for {
-          JObject(root) <- result
-          JField("crew", JArray(crew)) <- root
-          JObject(member) <- crew
-          JField("job", JString(job)) <- member if job == "Director"
-          JField("id", JInt(id)) <- member
-          JField("name", JString(name)) <- member
+          case JObject(root) <- result
+          case JField("crew", JArray(crew)) <- root
+          case JObject(member) <- crew
+          case JField("job", JString(job)) <- member if job == "Director"
+          case JField("id", JInt(id)) <- member
+          case JField("name", JString(name)) <- member
         } yield Director(id.toInt, name)).headOption
 
 //        // Update the cache and save it to the file
@@ -157,7 +158,19 @@ object Request extends App{
 //    }
   }
 
-  type FullName = (String,String)
+  def fetchMovies(actorId: Int): Set[(Int, String)] = {
+    val url = f"https://api.themoviedb.org/3/person/$actorId/movie_credits?api_key=$apikey"
+    val result = do_request(url)
+    (for {
+      case JObject(child) <- result
+      case JField("cast", JArray(cast)) <- child
+      case JObject(movie) <- cast
+      case JField("id", JInt(id)) <- movie
+      case JField("title", JString(title)) <- movie
+    } yield (id.toInt, title)).toSet
+  }
+
+  private type FullName = (String, String)
 
   def collaboration(actor1: FullName, actor2: FullName): Set[(String, String)] = {
     // Helper URLs for actor searches
@@ -193,9 +206,7 @@ object Request extends App{
         (director.name, movieTitle) // Map director's name and movie title
       }
     }
-
     collaboration
   }
-
 
 }

@@ -8,15 +8,14 @@ import org.json4s.native.Serialization.write
 
 object TMDBCache {
   implicit val formats: Formats = DefaultFormats
-  val cacheDir: String = "cache"
-  val cacheFile: String = s"src/main/scala/cache/movie.json"
+  private val cacheFile: String = s"src/main/scala/cache/movie.json"
 
   // Case class for a director
   case class Director(id: Int, name: String)
 
   // Ensure the cache directory and file exist
   private def ensureCacheFile(): Unit = {
-    val dir = new File(cacheDir)
+    val dir = new File(cacheFile)
     if (!dir.exists()) dir.mkdirs() // Create directory if it doesn't exist
 
     val file = new File(cacheFile)
@@ -50,10 +49,10 @@ object TMDBCacheTest extends App {
 
   // Example: Find director for a movie
   val movieId = 272 // Example movie ID
-  val director = findMovieDirector(movieId)
+  val director: Any = findMovieDirector(movieId)
   println(s"Director of movie $movieId: $director")
 
   // Example: Call again to demonstrate caching
-  val cachedDirector = findMovieDirector(movieId)
+  val cachedDirector: Any = findMovieDirector(movieId)
   println(s"Cached Director of movie $movieId: $cachedDirector")
 }
