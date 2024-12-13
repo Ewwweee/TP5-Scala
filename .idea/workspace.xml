@@ -5,76 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="956cec56-6b58-404d-8a37-438a37afd051" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.bsp/sbt.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/.history3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/scala-2.12/sync/copy-resource" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/scala-2.12/tp5-scala_2.12-0.1.0-SNAPSHOT.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/scala-2.12/update/update_cache_2.12/inputs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/scala-2.12/update/update_cache_2.12/output" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/_global/_global/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/_global/csrConfiguration/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/_global/csrProject/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/_global/dependencyPositions/_global/streams/update_cache_2.12/input_dsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/_global/dependencyPositions/_global/streams/update_cache_2.12/output_dsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/_global/ivyConfiguration/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/_global/ivySbt/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/_global/moduleSettings/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/_global/projectDescriptors/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/_global/scalaCompilerBridgeScope/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/_global/update/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/_global/_global/compileOutputs/previous" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/_global/_global/discoveredMainClasses/data" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/bgRun/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/bspReporter/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/compile/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/compileIncremental/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/compileIncremental/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/copyResources/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/dependencyClasspath/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/exportedProductJars/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/exportedProducts/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/externalDependencyClasspath/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/incOptions/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/internalDependencyClasspath/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/internalDependencyClasspath/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/mainClass/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/managedClasspath/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/packageBin/_global/streams/inputs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/packageBin/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/packageBin/_global/streams/output" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/scalacOptions/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/unmanagedClasspath/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/unmanagedClasspath/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/compile/unmanagedJars/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/runtime/dependencyClasspathAsJars/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/runtime/exportedProductJars/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/runtime/externalDependencyClasspath/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/runtime/fullClasspathAsJars/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/runtime/internalDependencyAsJars/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/runtime/internalDependencyAsJars/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/runtime/managedClasspath/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/runtime/unmanagedClasspath/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/runtime/unmanagedClasspath/_global/streams/out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/streams/runtime/unmanagedJars/_global/streams/export" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/untitled/project/target/config-classes/$31ccd239007877c25ede.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/untitled/project/target/config-classes/$7f91a515233ca797a861.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/untitled/project/target/config-classes/$a7479f33130867f33989.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/untitled/project/target/config-classes/$b77446be65741d61fdfb.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/untitled/project/target/config-classes/$e77d7d0d0acde8f1e2b1.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/untitled/src/main/scala/Request.scala" beforeDir="false" afterPath="$PROJECT_DIR$/untitled/src/main/scala/Request.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled/src/main/scala/TMDBCache.scala" beforeDir="false" afterPath="$PROJECT_DIR$/untitled/src/main/scala/TMDBCache.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled/src/main/scala/TMDBTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/untitled/src/main/scala/TMDBTest.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled/src/main/scala/cache/movie.json" beforeDir="false" afterPath="$PROJECT_DIR$/untitled/src/main/scala/cache/movie.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled/target/scala-3.3.4/classes/TMDBCache.tasty" beforeDir="false" afterPath="$PROJECT_DIR$/untitled/target/scala-3.3.4/classes/TMDBCache.tasty" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled/target/scala-3.3.4/classes/TMDBCacheTest.tasty" beforeDir="false" afterPath="$PROJECT_DIR$/untitled/target/scala-3.3.4/classes/TMDBCacheTest.tasty" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled/target/scala-3.3.4/classes/TMDBTest.tasty" beforeDir="false" afterPath="$PROJECT_DIR$/untitled/target/scala-3.3.4/classes/TMDBTest.tasty" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled/target/scala-3.3.4/classes/cache/actorid_to_movie.json" beforeDir="false" afterPath="$PROJECT_DIR$/untitled/target/scala-3.3.4/classes/cache/actorid_to_movie.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled/target/scala-3.3.4/classes/cache/movie.json" beforeDir="false" afterPath="$PROJECT_DIR$/untitled/target/scala-3.3.4/classes/cache/movie.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,10 +56,11 @@
     "Application.Request.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Scala REPL.Unnamed.executor": "Run",
-    "git-widget-placeholder": "Merging Gabriel",
+    "git-widget-placeholder": "Gabriel",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Admin/Documents/IMT Atlantique/UE -Programmation Polyglote-/TP5/TP5-Scala",
+    "last_opened_file_path": "C:/Users/Admin/Documents/IMT Atlantique/UE -Programmation Polyglote-/TP5/TP5-Scala/untitled",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
