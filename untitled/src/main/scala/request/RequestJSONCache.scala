@@ -8,10 +8,11 @@ import org.json4s.JsonDSL.*
 import scala.io.Source
 import java.io.PrintWriter
 
-class RequestJSONCache(override val apiKey:String) extends API_json4(apiKey) {
-  val cache_movie_url: String = "file:./src/main/scala/cache/movie.json"
-  val cache_actor_to_id_url: String = "./src/main/scala/cache/actor_to_id.json"
-  val cache_actorid_to_movie: String = "./src/main/scala/cache/actorid_to_movie.json"
+// Question 4
+class RequestJSONCache(override val apiKey:String, val path_cache:String) extends API_json4(apiKey) {
+  val cache_movie_url: String = path_cache + "/movie.json"// path_cache = ./src/main/scala/cache"
+  val cache_actor_to_id_url: String = path_cache + "/actor_to_id.json"// "./src/main/scala/cache/actor_to_id.json"
+  val cache_actorid_to_movie: String =path_cache + "/actorid_to_movie.json" //"./src/main/scala/cache/actorid_to_movie.json"
   var find_actor_id_map: Map[(String, String), Int] = Map();
   var find_actor_movies_map: Map[Int, Set[(Int, String)]] = Map()
 
@@ -63,14 +64,13 @@ class RequestJSONCache(override val apiKey:String) extends API_json4(apiKey) {
 
     result_option match {
       case None => None
-      case Some(value) => {
+      case Some(value) => 
         val updated_json = jsonContents ~ (query -> JInt(value))
-        println("updated_json : " + compact(render(updated_json)))
         document_out.println(compact(render(updated_json)))
         find_actor_id_map = find_actor_id_map + ((firstName, lastName) -> value);
         document_out.close()
         Some(value)
-      }
+      
     }
   }
 
