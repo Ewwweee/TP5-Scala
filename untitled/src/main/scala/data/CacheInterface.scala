@@ -16,6 +16,11 @@ trait CacheInterface(val path_cache_folder:String) {
   def add_name_to_id_actor_secondary_cache(firstName:String,lastName:String,id:Int):Unit
   def get_actor_movies_from_name_secondary_cache(actor_id:Int) : Option[Set[(Int,String)]]
   def add_id_to_movies_for_actor_secondary_cache(actor_id:Int,movies:Set[(Int,String)]):Unit
+  def get_director_movies_primary_cache(movieId:Int):Option[(Int,String)]
+  def add_director_primary_cache(movieId:Int, directorId:Int,directorName:String): Unit
+  def get_director_movies_secondary_cache(movieID:Int):Option[(Int,String)]
+  def add_director_secondary_cache(movieID: Int, directorId: Int, directorName: String): Unit
+  
   protected def get_documents(url: String): (JObject, PrintWriter) = {
     val source = Source.fromURL("file:" + url)
     try {
