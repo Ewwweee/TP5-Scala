@@ -9,9 +9,11 @@ import java.io.{PrintWriter, StringWriter}
 class Cache(override val path_cache_folder:String) extends CacheInterface(path_cache_folder) {
   private val name_actorid_to_movie:String = "/actorid_to_movie.json"
   private val name_actor_to_id:String = "/actor_to_id.json"
+  private val name_movie_to_director:String = "/movie.json"
 
   private var _find_actor_id_map_primary_cache: Map[(String, String), Actor] = Map()
   private var _find_actor_movies_map_primary_cache: Map[Int, Set[Movie]] = Map()
+  private var _find_director_movies_map_primary_cache:Map[Int,Director] = Map()
 
   // Pour actor_id
   private var _find_actor_id_document:PrintWriter= PrintWriter(new StringWriter())
@@ -23,6 +25,10 @@ class Cache(override val path_cache_folder:String) extends CacheInterface(path_c
   private var _find_actor_movies_jobject: JObject = JObject()
   private var _find_actor_movies_set: Map[Int, Set[Movie]] = Map()
 
+  // Pour movie.json
+  private var _find_movies_director_document: PrintWriter = PrintWriter(new StringWriter())
+  private var _find_movies_director_jobject: JObject = JObject()
+  private var _find_movies_director_set: Map[Int, Director] = Map()
 
   load_file_secondary_caches()
 
@@ -73,8 +79,26 @@ class Cache(override val path_cache_folder:String) extends CacheInterface(path_c
           mapMovies + (key -> List(movie))
       }
     }
-
     _find_actor_movies_set = mapMovies.map((key,list) => (key,list.toSet))
+
+    //On get les valeurs de movie.json
+    val (jobject3, doc3) = super.get_documents(path_cache_folder + name_movie_to_director)
+    _find_movies_director_jobject = jobject3
+    _find_movies_director_document.close()
+    _find_movies_director_document = doc3
+    _find_movies_director_document.println(compact(render(_find_movies_director_jobject)))
+    _find_movies_director_document.close()
+    var map_director:Map[Int,Director] = Map()
+    val resultDirector = (for {
+      case JField(key, JObject(director)) <- jobject3.obj
+      case JField("id", JInt(id)) <- director
+      case JField("name", JString(name)) <- director
+    } yield (key.toInt,Director(id.toInt,name)))
+
+    for (elem <- resultDirector) {
+      map_director = map_director + (elem._1 -> elem._2)
+    }
+    _find_movies_director_set = map_director
   }
 
   private def close_all_documents() :Unit = {
@@ -91,6 +115,12 @@ class Cache(override val path_cache_folder:String) extends CacheInterface(path_c
     _find_actor_movies_document.println(compact(render(_find_actor_movies_jobject)))
     _find_actor_movies_document.flush() // Force l'écriture dans le fichier
     _find_actor_movies_document.close()
+
+    //movie.json
+    _find_movies_director_document = PrintWriter(path_cache_folder + name_movie_to_director)
+    _find_movies_director_document.println(compact(render(_find_movies_director_jobject)))
+    _find_movies_director_document.flush()
+    _find_movies_director_document.close()
   }
 
   def find_actor_id_map_primary_cache:String = _find_actor_id_map_primary_cache.mkString
@@ -154,5 +184,34 @@ class Cache(override val path_cache_folder:String) extends CacheInterface(path_c
       JObject("id" -> JInt(id), "title" -> JString(title))).toList)
 
    _find_actor_movies_jobject = _find_actor_movies_jobject ~ ((actor_id + "") -> actor_id_json)
+  }
+
+  override def get_director_movies_primary_cache(movieId:Int):Option[(Int,String)] = {
+    val director = _find_director_movies_map_primary_cache.get(movieId)
+
+    director match {
+      case None => None
+      case Some(value) => Some((value.id,value.name))
+    }
+  }
+
+  override def get_director_movies_secondary_cache(movieID:Int):Option[(Int,String)] = {
+    val director = _find_movies_director_set.get(movieID)
+
+    director match {
+      case None => None
+      case Some(value) => Some((value.id,value.name))
+    }
+  }
+  override def add_director_primary_cache(movieId:Int, directorId:Int,directorName:String): Unit = {
+    _find_director_movies_map_primary_cache = _find_director_movies_map_primary_cache + (movieId -> Director(directorId,directorName))
+  }
+
+  override def add_director_secondary_cache(movieID:Int, directorId:Int,directorName:String):Unit = {
+    val director = JObject(
+      ("id" -> directorId),
+        ("name" -> directorName)
+    )
+    _find_movies_director_jobject = _find_movies_director_jobject ~ ((movieID+"") -> director)
   }
 }

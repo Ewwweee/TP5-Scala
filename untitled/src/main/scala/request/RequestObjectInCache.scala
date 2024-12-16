@@ -1,6 +1,6 @@
 package request
 
-import data.{Actor, FullName,Cache}
+import data.{Actor, FullName,CacheInterface}
 import org.json4s.{JArray, JField, JInt, JObject, JString}
 import org.json4s.native.JsonMethods.{compact, parse, render}
 
@@ -8,33 +8,9 @@ import java.io.PrintWriter
 import scala.io.Source
 
 //TO DO : Changer le
-class RequestObjectInCache(override val apiKey:String,val cache:Cache) extends API_json4(apiKey) {
-  val cache_movie_url: String = "path_cache" + "/movie.json"// path_cache = ./src/main/scala/cache"
-  val cache_actor_to_id_url: String = "path_cache" + "/actor_to_id.json"// "./src/main/scala/cache/actor_to_id.json"
-  val cache_actorid_to_movie: String ="path_cache" + "/actorid_to_movie.json" //"./src/main/scala/cache/actorid_to_movie.json"
-  var find_actor_id_map: Map[(String, String), Actor] = Map();
-  var find_actor_movies_map: Map[Int, Set[(Int, String)]] = Map()
-
-  private def seek_primary_cache[K, V](map: Map[K, V], key: K): Option[V] = {
-    map.get(key)
-  }
-
-  private def get_documents(url: String): (JObject, PrintWriter) = {
-    val source = Source.fromURL("file:" + url)
-    try {
-      val contents = source.mkString
-      val document_out = new PrintWriter(url)
-      val jsonContents = parse(contents).asInstanceOf[JObject]
-
-      (jsonContents, document_out)
-    } finally {
-      source.close() // Libère les ressources
-    }
-
-  }
+class RequestObjectInCache(override val apiKey:String,val cache:CacheInterface) extends API_json4(apiKey) {
 
   override def findActorId(firstName: String, lastName: String): Option[Int] = {
-    println("Map : " + cache.find_actor_id_map_primary_cache)
     val query = s"$firstName+$lastName"
 
     val primary_cache = cache.get_actor_id_from_name(firstName, lastName)
@@ -66,7 +42,6 @@ class RequestObjectInCache(override val apiKey:String,val cache:Cache) extends A
   }
 
   override def findActorMovies(actorId: Int): Set[(Int, String)] = {
-    println("Map : " + cache.find_actor_movies_map_primary_cache)
     val primary_value = cache.get_actor_movies_from_name(actorId)
 
     primary_value match {
@@ -91,10 +66,34 @@ class RequestObjectInCache(override val apiKey:String,val cache:Cache) extends A
   }
 //
   override def findMovieDirector(movieId: Int): Option[(Int, String)] = {
-    //TO DO : With JSON
-    super.findMovieDirector(movieId)
+    val primary_cache = cache.get_director_movies_primary_cache(movieId)
+
+    primary_cache match {
+      case None => //ne fait rien
+      case Some(value) =>
+        println("J'utilise le cache primaire");
+        return Some(value)
+    }
+
+    val secondary_cache = cache.get_director_movies_secondary_cache(movieId)
+    secondary_cache match {
+      case None => //ne fait rien
+      case Some(value) =>
+        println("J'utilise le cache secondaire")
+        cache.add_director_primary_cache(movieId = movieId, directorId = value._1, directorName = value._2)
+        return Some(value)
+    }
+    
+    val final_result = super.findMovieDirector(movieId)
+    final_result match {
+      case None => None
+      case Some(value) => 
+        cache.add_director_primary_cache(movieId,value._1,value._2)
+        cache.add_director_secondary_cache(movieId,value._1,value._2)
+        Some(value)
+    }
   }
-//
+
   override def collaboration(actor1: FullName, actor2: FullName): Set[(String, String)] = {
     super.collaboration(actor1, actor2)
   }
